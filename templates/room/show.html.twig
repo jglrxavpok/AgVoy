@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ room.summary }}{% endblock %}
+
+{% block body %}
+    <h1>{{ room.summary }}</h1>
+    <h3>{{ room.owner }}</h3>
+    <hr>
+    {% if room.description %}
+    {{ room.description }}
+    {% endif %}
+    <br>
+    <table>
+        <tr>
+            Informations générales
+        </tr>
+        {% if room.capacity %}
+        <tr>
+            <td>Nombre de lits</td>
+            <td>{{ room.capacity }}</td>
+        </tr>
+        {% endif %}
+        {% if room.superficy %}
+        <tr>
+            <td>Superficie</td>
+            <td>{{ room.superficy }}</td>
+        </tr>
+        {% endif %}
+    </table>
+    <h2>{{ room.price//10 }}.{{ room.price % 100 }} €</h2>
+{% endblock %}

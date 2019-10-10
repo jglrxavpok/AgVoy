@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}C&C de la région {{ region.name }}{% endblock %}
+
+{% block body %}
+Voici la liste des C&C disponibles dans la région {{ region.name }}
+    <table>
+        {% for room in region.rooms %}
+            <tr>
+                <td>
+                    <a href="{{ path('room_show', {'id': room.id}) }}">{{ room.summary }}</a>
+                </td>
+                <td>
+                    {{ room.owner }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
