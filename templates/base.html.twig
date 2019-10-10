@@ -1,12 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="stylesheet" href="/base.css">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <header>
+            {% block header %}
+                <nav>
+                    La couette caféinée
+                </nav>
+            {% endblock %}
+        </header>
+        <div class="body-margins">
+            {% block body %}{% endblock %}
+        </div>
     </body>
+    <footer>
+        {% block footer %}{% endblock %}
+        (c) 2019-2020 Baptiste Ghirardi & Xavier Niochaut
+    </footer>
+
+    {% block javascripts %}{% endblock %}
 </html>

@@ -37,7 +37,6 @@ class AppFixtures extends Fixture
         // ...
 
         $room = new Room();
-        $room->setSummary("Beau poulailler ancien à Évry");
         $room->setDescription("très joli espace sur paille");
         $room->setAddress("1 rue de la paix, 75000 Paris");
         $room->setCapacity(1);
