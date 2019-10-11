@@ -1,0 +1,7 @@
+bootstrap_menu:
+  menus:
+    main:
+      items:
+        todos:
+          label: 'Régions'
+          route: 'region_index'

@@ -3,14 +3,31 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="stylesheet" href="/base.css">
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <!-- Bootstrap core CSS -->
+            <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+            <!-- Custom styles for this template -->
+            <link href="{{ asset('css/shop-homepage.css') }}" rel="stylesheet">
+        {% endblock %}
+        {# Bloc utilisé pour les css des différentes pages #}
+        {% block customCSS %}{% endblock %}
     </head>
     <body>
         <header>
             {% block header %}
-                <nav>
-                    La couette caféinée
+                <!-- Barre de navigation du site -->
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+                    <div class="container">
+                        <a class="navbar-brand" href="/">La couette caféinée</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarsMainDefault">
+                            <ul class="navbar-nav mr-auto">
+                                {{ render_bootstrap_menu('main') }}
+                            </ul>
+                        </div>
+                    </div>
                 </nav>
             {% endblock %}
         </header>
@@ -18,10 +35,14 @@
             {% block body %}{% endblock %}
         </div>
     </body>
-    <footer>
+    <footer class="fixed-bottom text-center">
         {% block footer %}{% endblock %}
         (c) 2019-2020 Baptiste Ghirardi & Xavier Niochaut
     </footer>
 
-    {% block javascripts %}{% endblock %}
+    {% block javascripts %}
+        <!-- Bootstrap core JavaScript -->
+        <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+        <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    {% endblock %}
 </html>

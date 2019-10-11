@@ -9,6 +9,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class RegionController extends AbstractController
 {
     /**
+     * @Route("/region/list", name="region_index", methods="GET")
+     */
+    public function index()
+    {
+        return $this->render('region/index.html.twig', [
+            'regions' => $this->getRegions()->findAll()
+        ]);
+    }
+
+    /**
      * @Route("/region/{name}", name="region_show", methods="GET")
      * @param Region $region
      * @return \Symfony\Component\HttpFoundation\Response
@@ -25,16 +35,6 @@ class RegionController extends AbstractController
                 'name' => $name
             ]);
         }
-    }
-
-    /**
-     * @Route("/region/list", name="region_index", methods="GET")
-     */
-    public function index()
-    {
-        return $this->render('region/index.html.twig', [
-            'controller_name' => 'RegionController',
-        ]);
     }
 
     /**
@@ -73,10 +73,18 @@ class RegionController extends AbstractController
      * @return Region|object|null
      */
     private function getRegionByName(string $name) {
+        return $this->getRegions()->findOneBy(['name' => $name]);
+    }
+
+    /**
+     * Renvoies le repository avec toutes les régions disponibles
+     * @param string $name
+     * @return \App\Repository\RegionRepository|\Doctrine\Common\Persistence\ObjectRepository
+     */
+    private function getRegions() {
         $em = $this->getDoctrine()->getManager();
         $regionRepository = $em->getRepository(Region::class);
-        $region = $regionRepository->findOneBy(array('name' => $name));
-        return $region;
+        return $regionRepository;
     }
 
 }

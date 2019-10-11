@@ -1,20 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RegionController!{% endblock %}
+{% block customCSS %}
+<link rel="stylesheet" href="{{ asset('css/region_list.css') }}">
+{% endblock %}
+{% block title %}Régions disponibles{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/jglrxavpok/TSP/2A/CSC4101/proj-agvoy/agvoy-app/src/Controller/RegionController.php'|file_link(0) }}">src/Controller/RegionController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/jglrxavpok/TSP/2A/CSC4101/proj-agvoy/agvoy-app/templates/region/index.html.twig'|file_link(0) }}">templates/region/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <div id="container region-list">
+        <div class="col-md-6 offset-3">
+            {% for region in regions %}
+                <div class="container region-item border border-info border-rounded rounded-lg">
+                    <a href="{{ path('region_show', {'name': region.name}) }}">
+                        <div class="row col-md-12">
+                            <h4 class="display-4">{{ region.name }}</h4>
+                            <span>{{ region.country }}</span>
+                        </div>
+                        <div class="row col-md-12">
+                            {{ region.presentation }}
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

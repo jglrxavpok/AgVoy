@@ -1,0 +1,29 @@
+#region-list {
+    list-style-type: none;
+}
+
+.region-item {
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    transition: box-shadow .3s;
+}
+
+.region-item:hover {
+    /* Décalage sur X, Décalage sur Y, Longueur de l'ombre, Couleur */
+    box-shadow: 1px 1px 2px limegreen,
+                -1px -1px 2px limegreen,
+                1px -1px 2px limegreen,
+                -1px 1px 2px limegreen;
+}
+
+.region-item a {
+    margin: 0px;
+    text-decoration: none;
+    color: #0f0f0f;
+}
+
+.region-item a:hover {
+    color: blue;
+}
+
