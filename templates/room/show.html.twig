@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% import 'macros.html.twig' as macros %}
 
 {% block title %}{{ room.summary }}{% endblock %}
 
@@ -27,5 +28,12 @@
         </tr>
         {% endif %}
     </table>
-    <h2>{{ room.price//10 }}.{{ room.price % 100 }} €</h2>
+    <h2>{{ macros.format_price(room.price) }}</h2>
+    <div class="favorite-area">
+        {% if favorite %}
+            <a class="btn btn-primary  favorite-link favorite-link-remove" href="{{ path('room_like', {'id': room.id}) }}">Retirer des favoris</a>
+        {% else %}
+            <a class="btn btn-primary favorite-link favorite-link-add" href="{{ path('room_like', {'id': room.id}) }}">Ajouter aux favoris</a>
+        {% endif %}
+    </div>
 {% endblock %}

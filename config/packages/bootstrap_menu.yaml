@@ -2,6 +2,10 @@ bootstrap_menu:
   menus:
     main:
       items:
-        todos:
+        regions:
           label: 'Régions'
           route: 'region_index'
+        favorites:
+          label: 'Chambres favorites'
+          route: 'room_favorites'
+

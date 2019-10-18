@@ -6,19 +6,44 @@ use App\Entity\Room;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/room")
+ */
 class RoomController extends AbstractController
 {
     /**
-     * @Route("/room/{id}", name="room_show", requirements={"id": "\d+"})
+     * @Route("/favorites", name="room_favorites")
+     */
+    public function showFavorites() {
+        $session = $this->get("session");
+        $likes = $session->get("likes");
+        if(! $likes) {
+            $likes = [];
+        }
+        // on convertit des IDs des chambres vers les objets correspondants
+        $mapByID = function($id) {
+            return $this->getRooms()->findOneBy(['id' => $id]);
+        };
+        $favorites = array_map($mapByID, $likes);
+        return $this->render("room/favorites.html.twig", ["rooms" => $favorites]);
+    }
+
+    /**
+     * @Route("/{id}", name="room_show", requirements={"id": "\d+"})
      * @param Room $room
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function show(int $id)
     {
         $room = $this->getRooms()->findOneBy(array('id' => $id));
+        $likes = $this->get("session")->get("likes");
+        $isFavorite = true;
+        if(! $likes || ! in_array($room->getId(), $likes)) {
+            $isFavorite = false;
+        }
         if($room) {
             return $this->render('room/show.html.twig', [
-                'room' => $room,
+                'room' => $room, 'favorite' => $isFavorite
             ]);
         } else {
             return $this->render('room/404.html.twig');
@@ -26,7 +51,7 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/room/list", name="room_index")
+     * @Route("/", name="room_index")
      */
     public function index()
     {
@@ -36,7 +61,7 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/room/new", name="room_new")
+     * @Route("/new", name="room_new")
      */
     public function new_room()
     {
@@ -46,7 +71,7 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/room/{id}/edit", name="room_edit")
+     * @Route("/{id}/edit", name="room_edit")
      * @param Room $room
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -58,7 +83,7 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/room/{id}/delete", name="room_delete")
+     * @Route("/{id}/delete", name="room_delete")
      * @param Room $room
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -70,7 +95,7 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/room/{id}/like", name="room_like")
+     * @Route("/{id}/like", name="room_like")
      */
     public function toggleLike(Room $room) {
         $session = $this->get("session");
