@@ -41,36 +41,6 @@ class RegionController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="region_new")
-     */
-    public function new_region()
-    {
-        return $this->render('region/new.html.twig', [
-            'controller_name' => 'RegionController',
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="region_edit", methods={"GET","POST"})
-     */
-    public function edit()
-    {
-        return $this->render('region/edit.html.twig', [
-            'controller_name' => 'RegionController',
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/delete", name="region_delete", methods="DELETE")
-     */
-    public function delete()
-    {
-        return $this->render('region/delete.html.twig', [
-            'controller_name' => 'RegionController',
-        ]);
-    }
-
-    /**
      * Récupères une region avec son nom. Renvoie 'null' si aucune trouvée avec le nom donné
      * @param string $name
      * @return Region|object|null

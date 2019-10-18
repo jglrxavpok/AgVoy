@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BackofficeRegionController extends AbstractController
 {
     /**
-     * @Route("/", name="backoffice_region_index", methods={"GET"})
+     * @Route("/", name="admin_region_index", methods={"GET"})
      */
     public function index(RegionRepository $regionRepository): Response
     {
@@ -26,7 +26,7 @@ class BackofficeRegionController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="backoffice_region_new", methods={"GET","POST"})
+     * @Route("/new", name="admin_region_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -39,7 +39,7 @@ class BackofficeRegionController extends AbstractController
             $entityManager->persist($region);
             $entityManager->flush();
 
-            return $this->redirectToRoute('backoffice_region_index');
+            return $this->redirectToRoute('admin_region_index');
         }
 
         return $this->render('backoffice/region/new.html.twig', [
@@ -49,7 +49,7 @@ class BackofficeRegionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="backoffice_region_show", methods={"GET"})
+     * @Route("/{id}", name="admin_region_show", methods={"GET"})
      */
     public function show(Region $region): Response
     {
@@ -59,7 +59,7 @@ class BackofficeRegionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="backoffice_region_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_region_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Region $region): Response
     {
@@ -69,7 +69,7 @@ class BackofficeRegionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('backoffice_region_index');
+            return $this->redirectToRoute('admin_region_index');
         }
 
         return $this->render('backoffice/region/edit.html.twig', [
@@ -79,7 +79,7 @@ class BackofficeRegionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="backoffice_region_delete", methods={"DELETE"})
+     * @Route("/{id}", name="admin_region_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Region $region): Response
     {
@@ -89,6 +89,6 @@ class BackofficeRegionController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('backoffice_region_index');
+        return $this->redirectToRoute('admin_region_index');
     }
 }
