@@ -6,10 +6,13 @@ use App\Entity\Region;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/region")
+ */
 class RegionController extends AbstractController
 {
     /**
-     * @Route("/region/list", name="region_index", methods="GET")
+     * @Route("/", name="region_index", methods="GET")
      */
     public function index()
     {
@@ -19,8 +22,8 @@ class RegionController extends AbstractController
     }
 
     /**
-     * @Route("/region/{name}", name="region_show", methods="GET")
-     * @param Region $region
+     * @Route("/{name}", name="region_show", methods="GET")
+     * @param Region $myregion
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function show(string $name)
@@ -38,7 +41,7 @@ class RegionController extends AbstractController
     }
 
     /**
-     * @Route("/region/new", name="region_new")
+     * @Route("/new", name="region_new")
      */
     public function new_region()
     {
@@ -48,7 +51,7 @@ class RegionController extends AbstractController
     }
 
     /**
-     * @Route("/region/{id}/edit", name="region_edit")
+     * @Route("/{id}/edit", name="region_edit", methods={"GET","POST"})
      */
     public function edit()
     {
@@ -58,7 +61,7 @@ class RegionController extends AbstractController
     }
 
     /**
-     * @Route("/region/{id}/delete", name="region_delete", methods="DELETE")
+     * @Route("/{id}/delete", name="region_delete", methods="DELETE")
      */
     public function delete()
     {

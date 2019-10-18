@@ -70,6 +70,27 @@ class RoomController extends AbstractController
     }
 
     /**
+     * @Route("/room/{id}/like", name="room_like")
+     */
+    public function toggleLike(Room $room) {
+        $session = $this->get("session");
+        $likes = $session->get("likes");
+
+        if(! $likes) {
+            $likes = [];
+        }
+
+        if(! in_array($room->getId(), $likes)) {
+            $likes[] = $room->getId();
+        } else {
+            $likes = array_diff($likes, array($room->getId()));
+        }
+
+        $session->set("likes", $likes);
+        return $this->redirectToRoute("room_index");
+    }
+
+    /**
      * @return \App\Repository\RoomRepository|\Doctrine\Common\Persistence\ObjectRepository
      */
     private function getRooms() {
