@@ -27,7 +27,7 @@
                                 {{ render_bootstrap_menu('main') }}
                             </ul>
                             <ul class="navbar-nav">
-                                {% if user is defined %}
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                     {{ render_bootstrap_menu('connected') }}
                                 {% else %}
                                     {{ render_bootstrap_menu('unconnected') }}

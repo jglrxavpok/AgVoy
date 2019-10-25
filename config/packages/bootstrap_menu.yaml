@@ -10,7 +10,7 @@ bootstrap_menu:
       items:
         account:
           label: 'Se connecter'
-          route: 'index' # temporary
+          route: 'app_login'
 
     connected:
       items:
@@ -25,4 +25,4 @@ bootstrap_menu:
               route: 'room_favorites'
             disconnect:
               label: 'Déconnexion'
-              route: 'index' # temporary
+              route: 'app_logout'
