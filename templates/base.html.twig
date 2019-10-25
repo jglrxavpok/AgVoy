@@ -26,6 +26,13 @@
                             <ul class="navbar-nav mr-auto">
                                 {{ render_bootstrap_menu('main') }}
                             </ul>
+                            <ul class="navbar-nav">
+                                {% if user is defined %}
+                                    {{ render_bootstrap_menu('connected') }}
+                                {% else %}
+                                    {{ render_bootstrap_menu('unconnected') }}
+                                {% endif %}
+                            </ul>
                         </div>
                     </div>
                 </nav>

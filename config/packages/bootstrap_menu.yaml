@@ -5,7 +5,24 @@ bootstrap_menu:
         regions:
           label: 'Régions'
           route: 'region_index'
-        favorites:
-          label: 'Chambres favorites'
-          route: 'room_favorites'
 
+    unconnected:
+      items:
+        account:
+          label: 'Se connecter'
+          route: 'index' # temporary
+
+    connected:
+      items:
+        account:
+          label: 'Mon compte'
+          items:
+            account_info:
+              label: 'Informations de mon compte'
+              route: 'index' # temporary
+            favorites:
+              label: 'Chambres favorites'
+              route: 'room_favorites'
+            disconnect:
+              label: 'Déconnexion'
+              route: 'index' # temporary

@@ -12,6 +12,6 @@ class IndexController extends AbstractController
      */
     public function index()
     {
-        return $this->render('index.html.twig');
+        return $this->render('index.html.twig', ['user' => 'TEST']); // TODO: remove, only for testing
     }
 }
