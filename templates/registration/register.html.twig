@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Enregistrement{% endblock %}
+{% block customCSS %}<link rel="stylesheet" href="{{ asset('css/login.css') }}"/>{% endblock %}
+
+{% block body %}
+    <div class="container login-container">
+        <h2>Création de votre compte</h2>
+
+        <form name="registration_form" method="post">
+
+            <h1 class="h3 mb-3 font-weight-normal">Merci de vous identifier</h1>
+
+            <div class="input-group mb-3">
+                <label for="inputEmail" class="sr-only">Email</label>
+                <div class="input-group-prepend">
+                    <span class="input-group-text">@</span>
+                </div>
+                <input type="email" name="registration_form[email]" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+            </div>
+            <div class="input-group mb-3">
+                <label for="inputPassword" class="sr-only">Mot de passe</label>
+                <input type="password" name="registration_form[plainPassword]" id="inputPassword" class="form-control" placeholder="Password" required>
+            </div>
+            <label for="agreeTerms">Accepter les termes d'utilisation</label>
+            <input id="#agreeTerms" type="checkbox" name="registration_form[agreeTerms]">
+            <input type="hidden" name="registration_form[_token]"
+                   value="{{ csrf_token('authenticate') }}"
+            >
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" name="_remember_me"> Me connecter automatiquement
+                </label>
+            </div>
+
+            <button class="btn btn-lg btn-primary" type="submit">
+                Connexion
+            </button>
+        </form>
+
+        {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.plainPassword) }}
+            {{ form_row(registrationForm.agreeTerms) }}
+
+        <button class="btn">Register</button>
+    {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}
