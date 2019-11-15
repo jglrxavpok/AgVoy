@@ -1,7 +1,18 @@
 {% extends 'base.html.twig' %}
 
+{% block customCSS %}
+    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+{% endblock %}
+
 {% block title %}La Couette Caféinée{% endblock %}
 
 {% block body %}
-Un jour j'aurais du contenu
+    <div class="container-fluid description-text">
+        <div id="welcome-text">
+            <br> Bienvenue à toi jeune padawan.
+            <br> Prépares toi à entamer ton voyage au coeur de centaines de références à travers le monde.
+            <br> Nous t'accompagnerons dans ta quete du parfait logement.
+        </div>
+    </div>
+
 {% endblock %}

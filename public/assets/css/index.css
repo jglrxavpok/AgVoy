@@ -1,0 +1,21 @@
+.description-text {
+    font-family: "DejaVu Serif";
+    color: black;
+    width:600px;
+
+
+
+
+}
+#welcome-text {
+    text-align: right;
+    border-color: : black;
+    position: relative;
+    left: 500px;
+    top: 250px;
+    margin: 0px;
+}
+
+body{
+    background: #ffffff url("/assets/images/golden-gate-bridge-4k.jpeg") no-repeat left top fixed;
+}
