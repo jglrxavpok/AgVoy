@@ -35,6 +35,16 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Client", inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $client;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Owner", inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $Owner;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -112,4 +122,37 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getOwner(): ?Owner
+    {
+        return $this->Owner;
+    }
+
+    public function setOwner(?Owner $Owner): self
+    {
+        $this->Owner = $Owner;
+
+        return $this;
+    }
+
+    public function addRole($role):self
+    {
+        if(!in_array($role,$this->roles)) {
+            $this->roles[] = $role;
+        }
+        return $this;
+    }
+
 }
