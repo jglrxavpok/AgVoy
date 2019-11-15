@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation{% endblock %}
+{% block customCSS %}
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.standalone.css') }}"
+{% endblock %}
+
+{% block body %}
+    <h2 class="display-4">{{ room.summary }}</h2>
+
+    <input data-provide="datepicker" class="dates" id="#startTime" data-date-format="dd/mm/yyyy" data-start-date="0d" data-autoclose="true">
+    <input data-provide="datepicker" class="dates" id="#endTime" data-date-format="dd/mm/yyyy" data-start-date="0d" data-autoclose="true">
+
+    <button id="book" class="btn btn-success btn-lg">Réserver</button>
+{% endblock %}
+{% block customJS %}
+    <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+    <script>
+        $(function () {
+            $("#book").on('click', function() {
+                // vérifie que now < startTime < endTime
+                var now = new Date().getTime();
+                var startTime = $("#startTime").val();
+                var endTime = $("#endTime").val();
+                console.log(startTime);
+                console.log(endTime);
+            });
+        });
+        $('.dates').datepicker({
+            format: 'mm/dd/yyyy',
+            startDate: '0d',
+            autoclose: true,
+        });
+    </script>
+{% endblock %}

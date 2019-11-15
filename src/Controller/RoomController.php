@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Room;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -113,6 +114,17 @@ class RoomController extends AbstractController
 
         $session->set("likes", $likes);
         return $this->redirectToRoute("room_index");
+    }
+
+    /**
+     * @Route("/{id}/book", name="room_reservation", requirements={"id": "\d+"})
+     * @Security("is_granted('ROLE_CLIENT')")
+     */
+    public function showReservation(Room $room) {
+
+        return $this->render("room/reservation.html.twig", [
+           "room" => $room
+        ]);
     }
 
     /**

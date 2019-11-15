@@ -36,4 +36,11 @@
             <a class="btn btn-primary favorite-link favorite-link-add" href="{{ path('room_like', {'id': room.id}) }}">Ajouter aux favoris</a>
         {% endif %}
     </div>
+    <div>
+        {% if app.user %}
+            <a href="{{ path('room_reservation', { "id": room.id}) }}" class="btn btn-success">Réserver</a>
+        {% else %}
+            Connectez vous pour réserver cette chambre.
+        {% endif %}
+    </div>
 {% endblock %}

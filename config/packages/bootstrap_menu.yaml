@@ -11,6 +11,10 @@ bootstrap_menu:
         account:
           label: 'Se connecter'
           route: 'app_login'
+        signup:
+          label: "S'incrire"
+          route: 'app_register'
+
 
     connected:
       items:
