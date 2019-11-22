@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% import 'macros.html.twig' as macros %}
+
+{% block title %}Vos chambres{% endblock %}
+
+{% block body %}
+    <h1>Vos chambres</h1>
+    <hr>
+    {% if rooms is empty %}
+        Vous n'avez pas de chambres.
+    {% else %}
+    <table>
+            <tr>
+                <td>Résumé</td>
+                <td>Régions</td>
+                <td>Prix</td>
+                <td>Capacité</td>
+            </tr>
+        {% for room in rooms %}
+            <tr>
+                <td><a href="{{ path('room_show', {'id': room.id}) }}">{{ room.summary }}</a></td>
+                <td>
+                    {% for region in room.region %}
+                        <a href="{{ path('region_show', {'name': region.name}) }}">{{ region }}</a>
+                    {% endfor %}
+                </td>
+                <td>{{ macros.format_price(room.price) }}</td>
+                <td>{{ room.capacity }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+{% endblock %}

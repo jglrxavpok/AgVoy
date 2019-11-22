@@ -30,6 +30,35 @@ class RoomController extends AbstractController
     }
 
     /**
+     * @Route("/owned", name="room_owned")
+     */
+    public function showOwned() {
+        $user= $this->getUser();
+        $ownerId = $user->getOwner();
+        if (!$ownerId) {
+            $ownerId=0;
+        }
+        // on prend les chambres du propriétaire
+            $mapByOwner = function($owner) {
+            return $this->getRooms()->findBy(array('owner' => $owner));
+        };
+        $owned = $mapByOwner($ownerId);
+        return $this->render("room/owned.html.twig", ["rooms" => $owned]);
+    }
+
+    /**
+     * @Route("/all", name="room_all")
+     */
+    public function showAll() {
+        $rooms = $this->getRooms()->findAll();
+        if(!$rooms) {
+            $rooms = [];
+        }
+        // on convertit des IDs des chambres vers les objets correspondants
+        return $this->render("room/all.html.twig", ["rooms" => $rooms]);
+    }
+
+    /**
      * @Route("/{id}", name="room_show", requirements={"id": "\d+"})
      * @param Room $room
      * @return \Symfony\Component\HttpFoundation\Response
@@ -133,4 +162,5 @@ class RoomController extends AbstractController
     private function getRooms() {
         return $this->getDoctrine()->getManager()->getRepository(Room::class);
     }
+
 }
