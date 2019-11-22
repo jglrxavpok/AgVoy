@@ -1,14 +1,25 @@
 {% extends 'base.html.twig' %}
+{% import 'macros.html.twig' as macros %}
 
 {% block title %}Réservation{% endblock %}
 
 {% block body %}
     <div class="reservation">
-        Vous avez réservé la chambre <a href="{{ path('room_show', {"id": reservation.room.id}) }}">{{ reservation.room.summary }}.</a>
-        Durée du séjour: <br/>
-        Du {{ reservation.startTime|date('d/m/Y') }} au {{ reservation.endTime|date('d/m/Y') }}
-
-        <button type="button" data-toggle="modal" data-target="#confirmDialog" class="btn btn-danger">Supprimer la réservation</button>
+        <div class="reservation-info">
+            Vous avez réservé la chambre <a href="{{ path('room_show', {"id": reservation.room.id}) }}">{{ reservation.room.summary }}</a>.
+            <br/>
+            Durée du séjour: <br/>
+            Du {{ reservation.startTime|date('d/m/Y') }} au {{ reservation.endTime|date('d/m/Y') }}
+        </div>
+        <div class="reservation-price">
+            {% set length = date(reservation.endTime).diff(date(reservation.startTime)).days +1 %}
+            {% set fullPrice = reservation.room.price * length %}
+            Vous louez la chambre pour {{ length }} jour{% if length > 1 %}s{% endif %}.
+            A {{ macros.format_price(reservation.room.price) }}/nuit, vous payez {{ macros.format_price(fullPrice) }}
+        </div>
+        <div class="reservation-cancellation">
+            <button type="button" data-toggle="modal" data-target="#confirmDialog" class="btn btn-danger">Supprimer la réservation</button>
+        </div>
     </div>
 
     <div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog">
