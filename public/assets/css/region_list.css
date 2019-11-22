@@ -7,14 +7,16 @@
     margin-top: 10px;
     margin-bottom: 25px;
     transition: box-shadow .3s;
+    background-color: #FEFEFE;
 }
 
 .region-item:hover {
     /* Décalage sur X, Décalage sur Y, Longueur de l'ombre, Couleur */
-    box-shadow: 1px 1px 2px limegreen,
-                -1px -1px 2px limegreen,
-                1px -1px 2px limegreen,
-                -1px 1px 2px limegreen;
+    box-shadow: 1px 1px 2px palegoldenrod,
+                -1px -1px 2px palegoldenrod,
+                1px -1px 2px palegoldenrod,
+                -1px 1px 2px palegoldenrod;
+
 }
 
 .region-item a {
@@ -24,6 +26,10 @@
 }
 
 .region-item a:hover {
-    color: blue;
+    color: darkgrey;
+}
+
+body {
+    background: #ffffff url("/assets/images/earth.jpg") no-repeat left top fixed;
 }
 

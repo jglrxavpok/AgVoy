@@ -3,13 +3,15 @@
     color: black;
     width:600px;
 
-
+.btn_region-link{
+    color: #007bff;
+}
 
 
 }
 #welcome-text {
     text-align: right;
-    border-color: : black;
+    border-color: black;
     position: relative;
     left: 500px;
     top: 250px;
