@@ -25,6 +25,7 @@ class Client
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Reservation", mappedBy="client", orphanRemoval=true)
+     * @ORM\OrderBy({"startTime" = "ASC"})
      */
     private $reservations;
 
