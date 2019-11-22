@@ -7,42 +7,44 @@
 {% endblock %}
 
 {% block body %}
-    <h1 class="display-4">Mes réservations</h1>
-    {% if reservations|length > 0 %}
-        <table class="my-reservations">
-            <thead class="reservations-header">
-                <td>Chambre</td>
-                <td>Régions</td>
-                <td>Dates</td>
-                <td>Prix/nuit</td>
-                <td>Prix total</td>
-            </thead>
-            <tbody class="reservations-body">
-            {% for reservation in reservations %}
-                {% set length = date(reservation.endTime).diff(date(reservation.startTime)).days +1 %}
-                {% set fullPrice = reservation.room.price * length %}
-                <tr class="reservation">
-                    <td><a href="{{ path('reservation_show', { 'id': reservation.id }) }}">{{ reservation.room.summary }}</a></td>
-                    <td>
-                        {% for region in reservation.room.region %}
-                            <a href="{{ path('region_show', {'name': region.name}) }}">{{ region.name }}</a>
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% if length == 1 %}
-                            Le {{ reservation.startTime|date('d/m/Y') }}
-                        {% else %}
-                            Du {{ reservation.startTime|date('d/m/Y') }} au {{ reservation.endTime|date('d/m/Y') }} ({{ length }} jours)
-                        {% endif %}
-                    </td>
-                    <td>{{ macros.format_price(reservation.room.price) }}</td>
-                    <td>{{ macros.format_price(fullPrice) }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
+    <div class="container">
+        <h1 class="display-4">Mes réservations</h1>
+        {% if reservations|length > 0 %}
+            <table class="big-table">
+                <thead class="big-table-header">
+                <th>Chambre</th>
+                <th>Régions</th>
+                <th>Dates</th>
+                <th>Prix/nuit</th>
+                <th>Prix total</th>
+                </thead>
+                <tbody class="big-table-body">
+                {% for reservation in reservations %}
+                    {% set length = date(reservation.endTime).diff(date(reservation.startTime)).days +1 %}
+                    {% set fullPrice = reservation.room.price * length %}
+                    <tr class="reservation">
+                        <td><a href="{{ path('reservation_show', { 'id': reservation.id }) }}">{{ reservation.room.summary }}</a></td>
+                        <td>
+                            {% for region in reservation.room.region %}
+                                <a href="{{ path('region_show', {'name': region.name}) }}">{{ region.name }}</a>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% if length == 1 %}
+                                Le {{ reservation.startTime|date('d/m/Y') }}
+                            {% else %}
+                                Du {{ reservation.startTime|date('d/m/Y') }} au {{ reservation.endTime|date('d/m/Y') }} ({{ length }} jours)
+                            {% endif %}
+                        </td>
+                        <td>{{ macros.format_price(reservation.room.price) }}</td>
+                        <td>{{ macros.format_price(fullPrice) }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
 
-        </table>
-    {% else %}
-        Vous n'avez pas de réservations!
-    {% endif %}
+            </table>
+        {% else %}
+            Vous n'avez pas de réservations!
+        {% endif %}
+    </div>
 {% endblock %}
