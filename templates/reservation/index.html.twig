@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes réservations{% endblock %}
+
+{% block body %}
+    <ul class="my-reservations">
+        {% for reservation in reservations %}
+            <li>
+                <a href="{{ path('reservation_show', { 'id': reservation.id }) }}">{{ reservation.room.summary }}</a>
+                {{ reservation.startTime|date('d/m/Y') }} - {{ reservation.endTime|date('d/m/Y') }}
+            </li>
+        {% endfor %}
+
+    </ul>
+{% endblock %}

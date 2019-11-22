@@ -5,6 +5,10 @@ bootstrap_menu:
         regions:
           label: 'Régions'
           route: 'region_index'
+        reservations:
+          label: 'Mes réservations'
+          route: 'my_reservations'
+          roles: ['ROLE_CLIENT']
 
     unconnected:
       items:
