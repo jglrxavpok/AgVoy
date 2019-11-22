@@ -1,0 +1,17 @@
+.reservation-duration {
+    font-size: 22pt;
+}
+
+.reservation-price {
+    margin-right: 30px;
+    margin-top: 30px;
+
+    text-align: right;
+    float: right;
+
+    border: solid 1px limegreen;
+    border-radius: 4px;
+    padding: 8px;
+
+    font-size: 18pt;
+}

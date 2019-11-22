@@ -4,30 +4,35 @@
 {% block title %}Les chambres{% endblock %}
 
 {% block body %}
-    <h1>Les chambres</h1>
-    <hr>
-    {% if rooms is empty %}
-        Il n'y a pas de chambres.
-    {% else %}
-    <table>
-            <tr>
-                <td>Résumé</td>
-                <td>Régions</td>
-                <td>Prix</td>
-                <td>Capacité</td>
-            </tr>
-        {% for room in rooms %}
-            <tr>
-                <td><a href="{{ path('room_show', {'id': room.id}) }}">{{ room.summary }}</a></td>
-                <td>
-                    {% for region in room.region %}
-                        <a href="{{ path('region_show', {'name': region.name}) }}">{{ region }}</a>
-                    {% endfor %}
-                </td>
-                <td>{{ macros.format_price(room.price) }}</td>
-                <td>{{ room.capacity }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-    {% endif %}
+    <div class="container">
+        <h1>Les chambres</h1>
+        <hr>
+        {% if rooms is empty %}
+            Il n'y a pas de chambres.
+        {% else %}
+            <table class="big-table">
+                <thead class="big-table-header">
+                    <th>Résumé</th>
+                    <th>Régions</th>
+                    <th>Prix</th>
+                    <th>Capacité</th>
+                </thead>
+                <tbody class="big-table-body">
+                {% for room in rooms %}
+                    <tr>
+                        <td><a href="{{ path('room_show', {'id': room.id}) }}">{{ room.summary }}</a></td>
+                        <td>
+                            {% for region in room.region %}
+                                <a href="{{ path('region_show', {'name': region.name}) }}">{{ region }}</a>
+                            {% endfor %}
+                        </td>
+                        <td>{{ macros.format_price(room.price) }}</td>
+                        <td>{{ room.capacity }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+    </div>
 {% endblock %}

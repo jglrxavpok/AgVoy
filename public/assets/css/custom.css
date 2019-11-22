@@ -21,3 +21,22 @@
     border-radius: 4px;
     background-color: rgba(100%, 100%, 15%, 0.5);
 }
+
+.big-table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.big-table-header {
+    text-align: center;
+    font-size: 14pt;
+    border-bottom: 2px solid black;
+    box-shadow: 0 2px 1px gray;
+}
+
+.big-table-body {
+    box-shadow: 0 2px 1px gray;
+    text-align: center;
+}

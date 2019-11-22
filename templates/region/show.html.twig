@@ -1,20 +1,34 @@
 {% extends 'base.html.twig' %}
+{% import 'macros.html.twig' as macros %}
 
 {% block title %}C&C de la région {{ region.name }}{% endblock %}
 
 {% block body %}
-Voici la liste des C&C disponibles dans la région {{ region.name }}
-    <table>
-        {% for room in region.rooms %}
-            <tr>
-                <td>
-                    <a href="{{ path('room_show', {'id': room.id}) }}">{{ room.summary }}</a>
-                </td>
-                <td>
-                    {{ room.owner }}
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+    <div class="container">
+        Voici la liste des C&C disponibles dans la région {{ region.name }}
+        <table class="big-table">
+            <thead class="big-table-header">
+            <th>Résumé</th>
+            <th>Régions</th>
+            <th>Prix</th>
+            <th>Capacité</th>
+            </thead>
+            <tbody class="big-table-body">
+            {% for room in region.rooms %}
+                <tr>
+                    <td><a href="{{ path('room_show', {'id': room.id}) }}">{{ room.summary }}</a></td>
+                    <td>
+                        {% for region in room.region %}
+                            <a href="{{ path('region_show', {'name': region.name}) }}">{{ region }}</a>
+                        {% endfor %}
+                    </td>
+                    <td>{{ macros.format_price(room.price) }}</td>
+                    <td>{{ room.capacity }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
 
 {% endblock %}

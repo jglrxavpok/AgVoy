@@ -1,24 +1,41 @@
 {% extends 'base.html.twig' %}
 {% import 'macros.html.twig' as macros %}
 
+{% block customCSS %}
+    <link href="{{ asset('css/reservations.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block title %}Réservation{% endblock %}
 
 {% block body %}
-    <div class="reservation">
-        <div class="reservation-info">
-            Vous avez réservé la chambre <a href="{{ path('room_show', {"id": reservation.room.id}) }}">{{ reservation.room.summary }}</a>.
-            <br/>
-            Durée du séjour: <br/>
-            Du {{ reservation.startTime|date('d/m/Y') }} au {{ reservation.endTime|date('d/m/Y') }}
-        </div>
+    <div class="container">
+        {% set length = date(reservation.endTime).diff(date(reservation.startTime)).days +1 %}
+        {% set fullPrice = reservation.room.price * length %}
+
         <div class="reservation-price">
-            {% set length = date(reservation.endTime).diff(date(reservation.startTime)).days +1 %}
-            {% set fullPrice = reservation.room.price * length %}
-            Vous louez la chambre pour {{ length }} jour{% if length > 1 %}s{% endif %}.
-            A {{ macros.format_price(reservation.room.price) }}/nuit, vous payez {{ macros.format_price(fullPrice) }}
+            <i>
+                {{ macros.format_price(reservation.room.price) }} / nuit<br/>
+                x {{ length }} jour{% if length > 1 %}s{% endif %}</i>
+            <hr/>
+            <h4 class="display-4">{{ macros.format_price(fullPrice) }}</h4>
         </div>
-        <div class="reservation-cancellation">
-            <button type="button" data-toggle="modal" data-target="#confirmDialog" class="btn btn-danger">Supprimer la réservation</button>
+
+        <div class="reservation">
+            <h1 class="display-4">Votre réservation</h1>
+            <div class="reservation-info">
+                <h2><a href="{{ path('room_show', {"id": reservation.room.id}) }}">{{ reservation.room.summary }}</a></h2>
+            </div>
+            <div class="reservation-duration">
+                {% if length == 1 %}
+                    Le {{ reservation.startTime|date('d/m/Y') }}
+                {% else %}
+                    Du {{ reservation.startTime|date('d/m/Y') }} au {{ reservation.endTime|date('d/m/Y') }}
+                {% endif %}
+            </div>
+
+            <div class="reservation-cancellation">
+                <button type="button" data-toggle="modal" data-target="#confirmDialog" class="btn btn-danger"><span aria-hidden="true">&times;</span> Supprimer la réservation</button>
+            </div>
         </div>
     </div>
 
