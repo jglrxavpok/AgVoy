@@ -8,6 +8,7 @@
             <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
             <!-- Custom styles for this template -->
             <link href="{{ asset('css/shop-homepage.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
         {% endblock %}
         {# Bloc utilisé pour les css des différentes pages #}
         {% block customCSS %}{% endblock %}
@@ -38,9 +39,17 @@
                 </nav>
             {% endblock %}
         </header>
-        <div class="body-margins">
-            {% block body %}{% endblock %}
+        <div id="flashContainer" class="body-margins">
+            {# read and display several types of flash messages #}
+            {% for label, messages in app.flashes(['success', 'warning', 'error']) %}
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
         </div>
+        {% block body %}{% endblock %}
     </body>
     <footer class="fixed-bottom text-center">
         {% block footer %}{% endblock %}

@@ -29,8 +29,6 @@
             $("#book").on('click', function() {
                 var start = startDate.format("YYYY-MM-DD");
                 var end = endDate.format("YYYY-MM-DD");
-                console.log(start);
-                console.log(end);
                 $.ajax({
                     method: "POST",
                     url: "{{ path('room_make_reservation', { "id": room.id }) }}",
@@ -38,11 +36,17 @@
                         start: start,
                         end: end
                     },
-                    success: function(e) {
-                        console.log(e);
+                    success: function(response, text, e) {
+                        if(e.status === 200) {
+                            window.location.href = "{{ path('my_reservations') }}";
+                        }
                     },
                     error: function (e) {
-                        console.log(e);
+                        var contents = e.responseJSON;
+                        var errorFlash = $("<div>");
+                        errorFlash.addClass("flash-error");
+                        errorFlash.html(contents.error);
+                        $("#flashContainer").append(errorFlash);
                     }
                 })
             });

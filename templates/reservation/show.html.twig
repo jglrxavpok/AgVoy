@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+{% import 'macros.html.twig' as macros %}
+
+{% block title %}Réservation{% endblock %}
+
+{% block body %}
+    <div class="reservation">
+        <div class="reservation-info">
+            Vous avez réservé la chambre <a href="{{ path('room_show', {"id": reservation.room.id}) }}">{{ reservation.room.summary }}</a>.
+            <br/>
+            Durée du séjour: <br/>
+            Du {{ reservation.startTime|date('d/m/Y') }} au {{ reservation.endTime|date('d/m/Y') }}
+        </div>
+        <div class="reservation-price">
+            {% set length = date(reservation.endTime).diff(date(reservation.startTime)).days +1 %}
+            {% set fullPrice = reservation.room.price * length %}
+            Vous louez la chambre pour {{ length }} jour{% if length > 1 %}s{% endif %}.
+            A {{ macros.format_price(reservation.room.price) }}/nuit, vous payez {{ macros.format_price(fullPrice) }}
+        </div>
+        <div class="reservation-cancellation">
+            <button type="button" data-toggle="modal" data-target="#confirmDialog" class="btn btn-danger">Supprimer la réservation</button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Suppression de réservation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Voulez-vous vraiment supprimer cette réservation?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="cancelReservation()">Supprimer</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function cancelReservation() {
+            $.ajax({
+                method: "POST",
+                url: "{{ path('room_cancel_reservation', { "id": reservation.id }) }}",
+                success: function(data, text, e) {
+                    if(e.status === 200) {
+                        window.location.href = "{{ path('my_reservations') }}";
+                    }
+                },
+                error: function(e) {
+                    // TODO
+                }
+            });
+        }
+    </script>
+{% endblock %}
