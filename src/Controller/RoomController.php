@@ -30,23 +30,6 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/owned", name="room_owned")
-     */
-    public function showOwned() {
-        $user= $this->getUser();
-        $ownerId = $user->getOwner();
-        if (!$ownerId) {
-            $ownerId=0;
-        }
-        // on prend les chambres du propriétaire
-            $mapByOwner = function($owner) {
-            return $this->getRooms()->findBy(array('owner' => $owner));
-        };
-        $owned = $mapByOwner($ownerId);
-        return $this->render("room/owned.html.twig", ["rooms" => $owned]);
-    }
-
-    /**
      * @Route("/all", name="room_all")
      */
     public function showAll() {
@@ -72,8 +55,17 @@ class RoomController extends AbstractController
             $isFavorite = false;
         }
         if($room) {
+            $user = $this->getUser();
+            $owner = $user->getOwner();
+            $isOwnRoom = false;
+            $reservations = [];
+            if($owner && $owner == $room->getOwner()) {
+                $isOwnRoom = true;
+                $reservations = $room->getReservations();
+            }
+
             return $this->render('room/show.html.twig', [
-                'room' => $room, 'favorite' => $isFavorite
+                'room' => $room, 'favorite' => $isFavorite, 'isOwnRoom' => $isOwnRoom, 'reservations' => $reservations
             ]);
         } else {
             return $this->render('room/404.html.twig');

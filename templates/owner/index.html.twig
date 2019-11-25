@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% import 'macros.html.twig' as macros %}
+
+{% block title %}Vos chambres{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <table class="big-table">
+            <thead class="big-table-header">
+                <tr>
+                    <th>Chambre</th>
+                    <th>Prix/nuit</th>
+                    <th>Superficie</th>
+                </tr>
+            </thead>
+            <tbody class="big-table-body">
+            {% for room in rooms %}
+                <tr>
+                    <td>
+                        <a href="{{ path('room_show', {id: room.id}) }}">{{ room.summary }}</a>
+                    </td>
+                    <td>
+                        {{ macros.format_price(room.price) }}
+                    </td>
+                    <td>
+                        {{ room.superficy }} m²
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}

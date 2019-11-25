@@ -9,6 +9,10 @@ bootstrap_menu:
           label: 'Mes réservations'
           route: 'my_reservations'
           roles: ['ROLE_CLIENT']
+        room_creation:
+          label: 'Créer une chambre'
+          route: 'room_create'
+          roles: ['ROLE_OWNER']
 
     unconnected:
       items:

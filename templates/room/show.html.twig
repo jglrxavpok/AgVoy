@@ -37,8 +37,43 @@
         {% endif %}
     </div>
     <div>
-        {% if app.user %}
+        {% if is_granted('ROLE_CLIENT') %}
             <a href="{{ path('room_reservation', { "id": room.id}) }}" class="btn btn-success">Réserver</a>
+        {% elseif is_granted('ROLE_OWNER') and isOwnRoom %} {# On vérifie que le propriétaire est le bon #}
+            <div class="reservations">
+                <h3>Réservations</h3>
+                {% if reservations is not empty %}
+                    <table class="big-table">
+                        <thead class="big-table-header">
+                            <tr>
+                                <th>Utilisateur</th>
+                                <th>Jour(s)</th>
+                                <th>Prix total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="big-table-body">
+                            {% for reserv in reservations %}
+                                {% set length = date(reserv.endTime).diff(date(reserv.startTime)).days +1 %}
+                                {% set fullPrice = reserv.room.price * length %}
+
+                                <tr>
+                                    <td>{{ reserv.client.email }}</td>
+                                    <td>
+                                        {% if length == 1 %}
+                                            Le {{ reserv.startTime|date('d/m/Y') }}
+                                        {% else %}
+                                            Du {{ reserv.startTime|date('d/m/Y') }} au {{ reserv.endTime|date('d/m/Y') }} ({{ length }} jours)
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ macros.format_price(fullPrice) }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    Aucune réservation.
+                {% endif %}
+            </div>
         {% else %}
             Connectez vous pour réserver cette chambre.
         {% endif %}
