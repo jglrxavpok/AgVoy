@@ -51,8 +51,12 @@ class RoomController extends AbstractController
         $room = $this->getRooms()->findOneBy(array('id' => $id));
         $likes = $this->get("session")->get("likes");
         $isFavorite = true;
+        $commentaries = $room->getCommentaries();
         if(! $likes || ! in_array($room->getId(), $likes)) {
             $isFavorite = false;
+        }
+        if (!$commentaries){
+            $commentaries=[];
         }
         if($room) {
             $user = $this->getUser();
@@ -65,7 +69,7 @@ class RoomController extends AbstractController
             }
 
             return $this->render('room/show.html.twig', [
-                'room' => $room, 'favorite' => $isFavorite, 'isOwnRoom' => $isOwnRoom, 'reservations' => $reservations
+                'room' => $room, 'favorite' => $isFavorite, 'commentaries' => $commentaries, 'isOwnRoom' => $isOwnRoom, 'reservations' => $reservations
             ]);
         } else {
             return $this->render('room/404.html.twig');

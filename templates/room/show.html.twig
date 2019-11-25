@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 {% import 'macros.html.twig' as macros %}
-
+{% block customCSS %}
+    <link href="{{ asset('css/commentaries.css') }}" rel="stylesheet">
+{% endblock %}
 {% block title %}{{ room.summary }}{% endblock %}
 
 {% block body %}
@@ -36,6 +38,38 @@
             <a class="btn btn-primary favorite-link favorite-link-add" href="{{ path('room_like', {'id': room.id}) }}">Ajouter aux favoris</a>
         {% endif %}
     </div>
+
+    <div class="commentaries">
+        <h1>Commentaires</h1>
+        {% if commentaries|length > 0 %}
+            <table class="big-table">
+                <thead class="big-table-header">
+                <th>Utilisateur</th>
+                <th>Commentaire</th>
+                </thead>
+                <tbody class="big-table-body">
+                {% for commentary in commentaries %}
+                    <tr>
+                        <td>
+                            {{ commentary.client.email }}
+                        </td>
+                        <td>
+                            {{ commentary.text }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            Désolé, il n'y a pas de commentaires!
+        {% endif %}
+    </div>
+
+
+
+
+
+
     <div>
         {% if is_granted('ROLE_CLIENT') %}
             <a href="{{ path('room_reservation', { "id": room.id}) }}" class="btn btn-success">Réserver</a>

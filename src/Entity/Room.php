@@ -64,10 +64,16 @@ class Room
      */
     private $reservations;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Commentary", mappedBy="room", orphanRemoval=true)
+     */
+    private $commentaries;
+
     public function __construct()
     {
         $this->region = new ArrayCollection();
         $this->reservations = new ArrayCollection();
+        $this->commentaries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -215,6 +221,37 @@ class Room
             // set the owning side to null (unless already changed)
             if ($reservation->getRoom() === $this) {
                 $reservation->setRoom(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commentary[]
+     */
+    public function getCommentaries(): Collection
+    {
+        return $this->commentaries;
+    }
+
+    public function addCommentary(Commentary $commentary): self
+    {
+        if (!$this->commentaries->contains($commentary)) {
+            $this->commentaries[] = $commentary;
+            $commentary->setRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentary(Commentary $commentary): self
+    {
+        if ($this->commentaries->contains($commentary)) {
+            $this->commentaries->removeElement($commentary);
+            // set the owning side to null (unless already changed)
+            if ($commentary->getRoom() === $this) {
+                $commentary->setRoom(null);
             }
         }
 
