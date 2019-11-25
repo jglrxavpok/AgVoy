@@ -54,18 +54,22 @@ class RoomController extends AbstractController
         if(! $likes || ! in_array($room->getId(), $likes)) {
             $isFavorite = false;
         }
+        $user = $this->getUser();
         if($room) {
-            $user = $this->getUser();
-            $owner = $user->getOwner();
             $isOwnRoom = false;
             $reservations = [];
-            if($owner && $owner == $room->getOwner()) {
-                $isOwnRoom = true;
-                $reservations = $room->getReservations();
-            }
+            $delete_form = null;
+            if($user) {
+                $owner = $user->getOwner();
+                if($owner && $owner == $room->getOwner()) {
+                    $isOwnRoom = true;
+                    $reservations = $room->getReservations();
+                    $delete_form = $this->createFormBuilder()->create("delete-room")->getForm()->createView();
+                }
 
+            }
             return $this->render('room/show.html.twig', [
-                'room' => $room, 'favorite' => $isFavorite, 'isOwnRoom' => $isOwnRoom, 'reservations' => $reservations
+                'room' => $room, 'favorite' => $isFavorite, 'isOwnRoom' => $isOwnRoom, 'reservations' => $reservations, 'delete_form' => $delete_form
             ]);
         } else {
             return $this->render('room/404.html.twig');
@@ -88,30 +92,6 @@ class RoomController extends AbstractController
     public function new_room()
     {
         return $this->render('room/new.html.twig', [
-            'controller_name' => 'RoomController',
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="room_edit")
-     * @param Room $room
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function edit(Room $room)
-    {
-        return $this->render('room/edit.html.twig', [
-            'controller_name' => 'RoomController',
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/delete", name="room_delete")
-     * @param Room $room
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function delete(Room $room)
-    {
-        return $this->render('room/delete.html.twig', [
             'controller_name' => 'RoomController',
         ]);
     }

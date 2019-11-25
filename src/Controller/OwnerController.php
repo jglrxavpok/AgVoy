@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -60,5 +61,38 @@ class OwnerController extends AbstractController
         }
 
         return $this->render('owner/create.html.twig', [ 'create_room' => $form->createView() ]);
+    }
+
+    /**
+     * @Route("/delete/{id}", requirements={"id": "\d+"}, name="room_delete", methods={"POST"})
+     * @Security("is_granted('ROLE_OWNER')")
+     */
+    public function removeRoom(Request $request, Room $room) {
+        $user = $this->getUser();
+        $owner = $user->getOwner();
+        if(! $owner) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if($room->getOwner() != $owner) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $delete_form = $this->createFormBuilder()->create("delete-room")->getForm();
+
+        $delete_form->handleRequest($request);
+
+        $submittedToken = $request->request->get('token');
+
+        // 'delete-item' is the same value used in the template to generate the token
+        if ($this->isCsrfTokenValid('delete-room', $submittedToken)) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($room);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('room_owned');
+        }
+
+        throw $this->createAccessDeniedException();
     }
 }

@@ -4,7 +4,16 @@
 {% block title %}{{ room.summary }}{% endblock %}
 
 {% block body %}
-    <h1>{{ room.summary }}</h1>
+    <h1>
+        {{ room.summary }}
+        {% if is_granted('ROLE_OWNER') and isOwnRoom %} {# On vérifie que le propriétaire est le bon #}
+            <form style="display: inline-block;" action="{{ path('room_delete', {id: room.id}) }}" method="post">
+            <input type="hidden" name="token" value="{{ csrf_token('delete-room') }}"/>
+            <button class="btn btn-danger">Supprimer l'annonce</button>
+            {{ form_end(delete_form )}}
+        {% endif %}
+    </h1>
+    <br/>
     <h3>{{ room.owner }}</h3>
     <hr>
     {% if room.description %}
