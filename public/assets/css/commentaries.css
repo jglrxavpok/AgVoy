@@ -1,0 +1,21 @@
+.commentaries {
+    width: min-content;
+
+    margin-right: 30px;
+    margin-top: -150px;
+
+    text-align: center;
+    float: right;
+
+    border: solid 1px limegreen;
+    border-radius: 4px;
+    padding: 8px;
+
+    font-size: 12pt;
+
+}
+table {
+    border-collapse: separate;
+    border-spacing: 50px 0;
+}
+
