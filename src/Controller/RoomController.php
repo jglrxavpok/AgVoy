@@ -60,9 +60,6 @@ class RoomController extends AbstractController
         }
         if($room) {
             $user = $this->getUser();
-            $owner = $user->getOwner();
-        $user = $this->getUser();
-        if($room) {
             $isOwnRoom = false;
             $reservations = [];
             $delete_form = null;
@@ -73,10 +70,10 @@ class RoomController extends AbstractController
                     $reservations = $room->getReservations();
                     $delete_form = $this->createFormBuilder()->create("delete-room")->getForm()->createView();
                 }
-
             }
             return $this->render('room/show.html.twig', [
-                'room' => $room, 'favorite' => $isFavorite, 'commentaries' => $commentaries, 'isOwnRoom' => $isOwnRoom, 'reservations' => $reservations, 'isOwnRoom' => $isOwnRoom, 'reservations' => $reservations, 'delete_form' => $delete_form
+                'room' => $room, 'favorite' => $isFavorite, 'commentaries' => $commentaries, 'isOwnRoom' => $isOwnRoom,
+                'reservations' => $reservations, 'delete_form' => $delete_form
             ]);
         } else {
             return $this->render('room/404.html.twig');
