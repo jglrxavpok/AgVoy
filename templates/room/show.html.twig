@@ -2,50 +2,107 @@
 {% import 'macros.html.twig' as macros %}
 {% block customCSS %}
     <link href="{{ asset('css/commentaries.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/room.css') }}" rel="stylesheet">
 {% endblock %}
 {% block title %}{{ room.summary }}{% endblock %}
 
 {% block body %}
-    <h1>
-        {{ room.summary }}
+    <div class="container" id="fullContainer">
+        {% if room.imageName is not null %}
+            <div class="thumbnail">
+                <img src="{{ vich_uploader_asset(room, 'imageFile') }}"/>
+                <div class="thumbnail-text">
+                    <h1>{{ room.summary }}</h1>
+                    <h3>de <a href="{{ path('profile', {user: room.owner.user.id}) }}">{{ room.owner }}</a></h3>
+                </div>
+            </div>
+        {% else %}
+            <h1>
+                {{ room.summary }}
+            </h1>
+            <br/>
+            <h3>{{ room.owner }}</h3>
+        {% endif %}
         {% if is_granted('ROLE_OWNER') and isOwnRoom %} {# On vérifie que le propriétaire est le bon #}
-            <form style="display: inline-block;" action="{{ path('room_delete', {id: room.id}) }}" method="post">
+        <form style="display: inline-block;" action="{{ path('room_delete', {id: room.id}) }}" method="post">
             <input type="hidden" name="token" value="{{ csrf_token('delete-room') }}"/>
             <button class="btn btn-danger">Supprimer l'annonce</button>
             {{ form_end(delete_form )}}
+            {% endif %}
+        <hr>
+        {% if room.description %}
+        {{ room.description }}
         {% endif %}
-    </h1>
-    <br/>
-    <h3>{{ room.owner }}</h3>
-    <hr>
-    {% if room.description %}
-    {{ room.description }}
-    {% endif %}
-    <br>
-    <table>
-        <tr>
-            Informations générales
-        </tr>
-        {% if room.capacity %}
-        <tr>
-            <td>Nombre de lits</td>
-            <td>{{ room.capacity }}</td>
-        </tr>
-        {% endif %}
-        {% if room.superficy %}
-        <tr>
-            <td>Superficie</td>
-            <td>{{ room.superficy }}</td>
-        </tr>
-        {% endif %}
-    </table>
-    <h2>{{ macros.format_price(room.price) }}</h2>
-    <div class="favorite-area">
-        {% if favorite %}
-            <a class="btn btn-primary  favorite-link favorite-link-remove" href="{{ path('room_like', {'id': room.id}) }}">Retirer des favoris</a>
-        {% else %}
-            <a class="btn btn-primary favorite-link favorite-link-add" href="{{ path('room_like', {'id': room.id}) }}">Ajouter aux favoris</a>
-        {% endif %}
+
+        <br>
+        <table>
+            <tr>
+                Informations générales
+            </tr>
+            {% if room.capacity %}
+            <tr>
+                <td>Nombre de lits</td>
+                <td>{{ room.capacity }}</td>
+            </tr>
+            {% endif %}
+            {% if room.superficy %}
+            <tr>
+                <td>Superficie</td>
+                <td>{{ room.superficy }}</td>
+            </tr>
+            {% endif %}
+        </table>
+        <h2>{{ macros.format_price(room.price) }}</h2>
+        <div class="favorite-area">
+            {% if favorite %}
+                <a class="btn btn-primary  favorite-link favorite-link-remove" href="{{ path('room_like', {'id': room.id}) }}">Retirer des favoris</a>
+            {% else %}
+                <a class="btn btn-primary favorite-link favorite-link-add" href="{{ path('room_like', {'id': room.id}) }}">Ajouter aux favoris</a>
+            {% endif %}
+        </div>
+
+        <div>
+            {% if is_granted('ROLE_CLIENT') %}
+                <a href="{{ path('room_reservation', { "id": room.id}) }}" class="btn btn-success">Réserver</a>
+            {% elseif is_granted('ROLE_OWNER') and isOwnRoom %} {# On vérifie que le propriétaire est le bon #}
+                <div class="reservations">
+                    <h3>Réservations</h3>
+                    {% if reservations is not empty %}
+                        <table class="big-table">
+                            <thead class="big-table-header">
+                                <tr>
+                                    <th>Utilisateur</th>
+                                    <th>Jour(s)</th>
+                                    <th>Prix total</th>
+                                </tr>
+                            </thead>
+                            <tbody class="big-table-body">
+                                {% for reserv in reservations %}
+                                    {% set length = date(reserv.endTime).diff(date(reserv.startTime)).days +1 %}
+                                    {% set fullPrice = reserv.room.price * length %}
+
+                                    <tr>
+                                        <td>{{ reserv.client.email }}</td>
+                                        <td>
+                                            {% if length == 1 %}
+                                                Le {{ reserv.startTime|date('d/m/Y') }}
+                                            {% else %}
+                                                Du {{ reserv.startTime|date('d/m/Y') }} au {{ reserv.endTime|date('d/m/Y') }} ({{ length }} jours)
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ macros.format_price(fullPrice) }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        Aucune réservation.
+                    {% endif %}
+                </div>
+            {% else %}
+                Connectez vous pour réserver cette chambre.
+            {% endif %}
+        </div>
     </div>
 
     <div class="commentaries">
@@ -73,52 +130,15 @@
             Désolé, il n'y a pas de commentaires!
         {% endif %}
     </div>
+{% endblock %}
 
-
-
-
-
-
-    <div>
-        {% if is_granted('ROLE_CLIENT') %}
-            <a href="{{ path('room_reservation', { "id": room.id}) }}" class="btn btn-success">Réserver</a>
-        {% elseif is_granted('ROLE_OWNER') and isOwnRoom %} {# On vérifie que le propriétaire est le bon #}
-            <div class="reservations">
-                <h3>Réservations</h3>
-                {% if reservations is not empty %}
-                    <table class="big-table">
-                        <thead class="big-table-header">
-                            <tr>
-                                <th>Utilisateur</th>
-                                <th>Jour(s)</th>
-                                <th>Prix total</th>
-                            </tr>
-                        </thead>
-                        <tbody class="big-table-body">
-                            {% for reserv in reservations %}
-                                {% set length = date(reserv.endTime).diff(date(reserv.startTime)).days +1 %}
-                                {% set fullPrice = reserv.room.price * length %}
-
-                                <tr>
-                                    <td>{{ reserv.client.email }}</td>
-                                    <td>
-                                        {% if length == 1 %}
-                                            Le {{ reserv.startTime|date('d/m/Y') }}
-                                        {% else %}
-                                            Du {{ reserv.startTime|date('d/m/Y') }} au {{ reserv.endTime|date('d/m/Y') }} ({{ length }} jours)
-                                        {% endif %}
-                                    </td>
-                                    <td>{{ macros.format_price(fullPrice) }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                {% else %}
-                    Aucune réservation.
-                {% endif %}
-            </div>
-        {% else %}
-            Connectez vous pour réserver cette chambre.
-        {% endif %}
-    </div>
+{% block customJS %}
+<script type="text/javascript">
+    $(function() {
+        var width = $(".thumbnail img").width();
+        var thumbnailContainer = $(".thumbnail");
+        thumbnailContainer.width(width);
+        thumbnailContainer.offset({ left: $("#body").outerWidth()/2-thumbnailContainer.outerWidth()/2 });
+    });
+</script>
 {% endblock %}

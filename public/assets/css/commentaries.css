@@ -1,8 +1,10 @@
 .commentaries {
+    position: absolute;
+    top: 130px;
+    right: 30px;
     width: min-content;
 
     margin-right: 30px;
-    margin-top: -150px;
 
     text-align: center;
     float: right;
@@ -13,7 +15,20 @@
 
     font-size: 12pt;
 
+    animation: fade-in 1s linear;
 }
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100%;
+    }
+}
+
+
 table {
     border-collapse: separate;
     border-spacing: 50px 0;
