@@ -1,5 +1,23 @@
 .thumbnail img {
     max-width: 50vw;
+    width: auto;
+    height: auto;
+}
+
+.thumbnail {
+    max-width: 50vw;
+}
+
+.thumbnail > a {
+    text-decoration: none;
+}
+
+.thumbnail > a > .thumbnail-text:hover {
+    color: cornflowerblue;
+}
+
+.thumbnail-text {
+    color: #1b1e21;
 }
 
 .thumbnail {

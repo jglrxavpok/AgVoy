@@ -1,34 +1,28 @@
 {% extends 'base.html.twig' %}
 {% import 'macros.html.twig' as macros %}
+{% block customCSS %}
+    <link href="{{ asset('css/room.css') }}" rel="stylesheet">
+{% endblock %}
 
 {% block title %}C&C de la région {{ region.name }}{% endblock %}
 
 {% block body %}
     <div class="container">
         Voici la liste des C&C disponibles dans la région {{ region.name }}
-        <table class="big-table">
-            <thead class="big-table-header">
-            <th>Résumé</th>
-            <th>Régions</th>
-            <th>Prix</th>
-            <th>Capacité</th>
-            </thead>
-            <tbody class="big-table-body">
-            {% for room in region.rooms %}
-                <tr>
-                    <td><a href="{{ path('room_show', {'id': room.id}) }}">{{ room.summary }}</a></td>
-                    <td>
-                        {% for region in room.region %}
-                            <a href="{{ path('region_show', {'name': region.name}) }}">{{ region }}</a>
-                        {% endfor %}
-                    </td>
-                    <td>{{ macros.format_price(room.price) }}</td>
-                    <td>{{ room.capacity }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
+        {% for room in region.rooms %}
+                <div class="thumbnail">
+                    <a href="{{ path('room_show', {id: room.id}) }}">
+                        {% if room.imageName is not null %}
+                            <img src="{{ vich_uploader_asset(room, 'imageFile') }}"/>
+                        {% endif %}
+                        <div class="thumbnail-text">
+                            <h1>{{ room.summary }}</h1>
+                            <h2>{{ macros.format_price(room.price) }}/ nuit</h2>
+                            Capacité: {{ room.capacity }}
+                        </div>
+                    </a>
+                </div>
+        {% endfor %}
     </div>
 
 {% endblock %}

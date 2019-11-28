@@ -31,28 +31,28 @@
             {% endif %}
         <hr>
         {% if room.description %}
+            <h4 class="display-4">Description</h4>
         {{ room.description }}
         {% endif %}
-
-        <br>
-        <table>
-            <tr>
+            <hr/>
+            <h4 class="display-4">
                 Informations générales
-            </tr>
-            {% if room.capacity %}
-            <tr>
-                <td>Nombre de lits</td>
-                <td>{{ room.capacity }}</td>
-            </tr>
-            {% endif %}
-            {% if room.superficy %}
-            <tr>
-                <td>Superficie</td>
-                <td>{{ room.superficy }}</td>
-            </tr>
-            {% endif %}
+            </h4>
+        <table class="big-table">
+            <thead class="big-table-header">
+                <th>Nombre de lits</th>
+                <th>Superficie</th>
+                <th>Prix/nuit</th>
+            </thead>
+            <tbody class="big-table-body">
+                <tr>
+                    <td>{{ room.capacity }}</td>
+                    <td>{{ room.superficy }}</td>
+                    <td>{{ macros.format_price(room.price) }}</td>
+                </tr>
+            </tbody>
         </table>
-        <h2>{{ macros.format_price(room.price) }}</h2>
+        <br/>
         <div class="favorite-area">
             {% if favorite %}
                 <a class="btn btn-primary  favorite-link favorite-link-remove" href="{{ path('room_like', {'id': room.id}) }}">Retirer des favoris</a>

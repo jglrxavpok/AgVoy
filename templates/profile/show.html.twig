@@ -3,5 +3,36 @@
 {% block title %}Profil de {{ user.email }}{% endblock %}
 
 {% block body %}
+    <div class="container">
+        <h1 class="display-4">Profil de {{ user.email }}</h1><span class="small">(oui dans la vraie vie on met pas l'adresse e-mail comme ça)</span>
+        {% if user.owner is not null %}
+            <div>
+                <h2>Informations de prioritaire</h2>
+                {{ user.owner }}
 
+                <div>
+                    Contact:
+                    <ul>
+                        <li>
+                            Adresse postale: {{ user.owner.address }}
+                        </li>
+                        <li>
+                            <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+        {% endif %}
+
+        {% if user.client is not null %}
+            <div>
+                <h2>Informations de client</h2>
+                {{ user.email }}
+
+                Bah on a pas grand chose en plus...
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

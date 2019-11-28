@@ -11,6 +11,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ProfileController extends AbstractController
 {
+
+    /**
+     * @Route("/mine", name="my_profile")
+     */
+    public function myProfile() {
+        return $this->redirectToRoute("profile", array("user" => $this->getUser()->getId()));
+    }
+
     /**
      * @Route("/{user}", requirements={"user": "\d+"}, name="profile")
      */
