@@ -24,11 +24,14 @@
             <h3>{{ room.owner }}</h3>
         {% endif %}
         {% if is_granted('ROLE_OWNER') and isOwnRoom %} {# On vérifie que le propriétaire est le bon #}
-        <form style="display: inline-block;" action="{{ path('room_delete', {id: room.id}) }}" method="post">
-            <input type="hidden" name="token" value="{{ csrf_token('delete-room') }}"/>
-            <button class="btn btn-danger">Supprimer l'annonce</button>
-            {{ form_end(delete_form )}}
-            {% endif %}
+        <div class="text-center">
+            <a href="{{ path('room_edit', {"id": room.id}) }}" class="btn btn-primary">Modifier l'annonce</a>
+            <form style="display: inline-block;" action="{{ path('room_delete', {id: room.id}) }}" method="post">
+                <input type="hidden" name="token" value="{{ csrf_token('delete-room') }}"/>
+                <button class="btn btn-danger">Supprimer l'annonce</button>
+                {{ form_end(delete_form )}}
+        </div>
+        {% endif %}
         <hr>
         {% if room.description %}
             <h4 class="display-4">Description</h4>

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Owner;
 use App\Entity\Region;
 use App\Entity\Room;
 use App\Form\RoomType;
@@ -46,6 +47,28 @@ class OwnerController extends AbstractController
         $room = new Room();
         $room->setOwner($owner);
 
+        return $this->modifyRoom($room, $request);
+    }
+
+    /**
+     * @Route("/edit/{id}", requirements={"id": "\d+"}, name="room_edit", methods={"GET", "POST"})
+     * @Security("is_granted('ROLE_OWNER')")
+     */
+    public function editRoom(Request $request, Room $room)
+    {
+        $user = $this->getUser();
+        $owner = $user->getOwner();
+        if(! $owner) {
+            throw $this->createAccessDeniedException("Vous devez être propriétaire pour créer une chambre!");
+        }
+        if($owner != $room->getOwner()) {
+            throw $this->createAccessDeniedException("Vous n'êtes pas le propriétaire de cette chambre!");
+        }
+
+        return $this->modifyRoom($room, $request);
+    }
+
+    private function modifyRoom(Room $room, Request $request) {
         $regions = $this->getDoctrine()->getRepository(Region::class)->findAll();
         $form = $this->createForm(RoomType::class, $room, array("regions" => $regions));
 
@@ -60,7 +83,7 @@ class OwnerController extends AbstractController
             return $this->redirectToRoute('room_owned');
         }
 
-        return $this->render('owner/create.html.twig', [ 'create_room' => $form->createView() ]);
+        return $this->render('owner/modify.html.twig', [ 'create_room' => $form->createView() ]);
     }
 
     /**

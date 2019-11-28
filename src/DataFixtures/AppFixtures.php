@@ -2,11 +2,14 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Client;
 use App\Entity\Owner;
 use App\Entity\Region;
 use App\Entity\Room;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
@@ -14,12 +17,65 @@ class AppFixtures extends Fixture
     public const NORD_PAS_DE_CALAIS_REGION_REFERENCE = 'npdc-region';
     public const NEW_YORK_REGION_REFERENCE = 'ny-region';
 
+    private $passwordEncoder;
+
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $this->passwordEncoder = $passwordEncoder;
+    }
+
+    private function loadUsers(ObjectManager $manager) {
+        $client = new Client();
+        $client->setEmail("user@example.com");
+        $user = new User();
+        $user->setEmail("user@example.com");
+        $user->setPassword($this->passwordEncoder->encodePassword($user, "abc"));
+        $user->setClient($client);
+        $user->addRole("ROLE_CLIENT");
+
+        $manager->persist($user);
+
+        $admin = new User();
+        $admin->setEmail("admin@example.com");
+        $admin->setPassword($this->passwordEncoder->encodePassword($admin, "abc"));
+        $admin->addRole("ROLE_ADMIN");
+
+        $manager->persist($admin);
+
+        $ownerObj = new Owner();
+        $ownerObj->setFirstName("John");
+        $ownerObj->setFamilyName("OfTheGarden");
+        $ownerObj->setCountry("UK");
+
+        $owner = new User();
+        $owner->setOwner($ownerObj);
+        $owner->setEmail("owner@example.com");
+        $owner->setPassword($this->passwordEncoder->encodePassword($owner, "abc"));
+        $owner->addRole("ROLE_OWNER");
+
+        $manager->persist($owner);
+
+
+        $manager->flush();
+    }
+
+    private function createFakeUser(ObjectManager $manager, Owner $owner) {
+        $user = new User();
+        $user->setEmail(strtolower($owner->getFirstName()) . '.' . strtolower($owner->getFamilyName()) . "@example.com");
+        $user->setPassword($this->passwordEncoder->encodePassword($user, "abc"));
+        $user->addRole("ROLE_OWNER");
+        $owner->setUser($user);
+        $manager->persist($user);
+    }
+
     public function load(ObjectManager $manager)
     {
+        $this->loadUsers($manager);
         $marcDupond = new Owner();
         $marcDupond->setFirstName("Marc");
         $marcDupond->setFamilyName("Dupond");
         $marcDupond->setCountry("FR");
+        $this->createFakeUser($manager, $marcDupond);
 
         $manager->persist($marcDupond);
 
@@ -27,6 +83,7 @@ class AppFixtures extends Fixture
         $jackSmith->setFirstName("Jack");
         $jackSmith->setFamilyName("Smith");
         $jackSmith->setCountry("US");
+        $this->createFakeUser($manager, $jackSmith);
 
         $manager->persist($jackSmith);
 
@@ -68,6 +125,7 @@ class AppFixtures extends Fixture
         $roomTourEiffel->setPrice(123499); // 1234.99€/nuit
         $roomTourEiffel->setSummary("Petit appartement charmant avec vue sur la Tour Eiffel");
         $roomTourEiffel->setSuperficy(10);
+        $roomTourEiffel->setImageName("Eiffel.jpg");
         //$roomTourEiffel->addRegion($regionIDF);
         // On peut plutôt faire une référence explicite à la référence
         // enregistrée précédamment, ce qui permet d'éviter de se
@@ -83,6 +141,7 @@ class AppFixtures extends Fixture
         $roomEntrepot->setPrice(199); // 1.99€/nuit
         $roomEntrepot->setSummary("Entrepôt désaffecté");
         $roomEntrepot->setSuperficy(200);
+        $roomEntrepot->setImageName("Dunkerque.jpg");
         //$roomTourEiffel->addRegion($regionIDF);
         // On peut plutôt faire une référence explicite à la référence
         // enregistrée précédamment, ce qui permet d'éviter de se
@@ -101,6 +160,7 @@ class AppFixtures extends Fixture
         $roomCityHall->setSummary("Poste de maire à prendre");
         $roomCityHall->setSuperficy(100);
         $roomCityHall->addRegion($this->getReference(self::NEW_YORK_REGION_REFERENCE));
+        $roomCityHall->setImageName("WhiteHouse.jpg");
         $jackSmith->addRoom($roomCityHall);
 
         $manager->persist($roomCityHall);
