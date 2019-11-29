@@ -140,10 +140,17 @@
 {% block customJS %}
 <script type="text/javascript">
     $(function() {
-        var width = $(".thumbnail img").width();
+        var thumbnail = $(".thumbnail img");
+        var width = thumbnail.width();
         var thumbnailContainer = $(".thumbnail");
         thumbnailContainer.width(width);
         thumbnailContainer.offset({ left: $("#body").outerWidth()/2-thumbnailContainer.outerWidth()/2 });
+
+        {% if room.imageName is not null %}
+        $("#body-background").css({
+            backgroundImage: "url(\"{{ vich_uploader_asset(room, 'imageFile') }}\")",
+        });
+        {% endif %}
     });
 </script>
 {% endblock %}

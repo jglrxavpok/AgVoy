@@ -8,7 +8,9 @@
 
 {% block body %}
     <div class="container">
-        Voici la liste des C&C disponibles dans la région {{ region.name }}
+        <h1 class="display-4">
+            Annonces disponibles dans la région {{ region.name }}
+        </h1>
         {% for room in region.rooms %}
                 <div class="thumbnail">
                     <a href="{{ path('room_show', {id: room.id}) }}">
@@ -25,4 +27,35 @@
         {% endfor %}
     </div>
 
+{% endblock %}
+
+{% block customJS %}
+    <script type="text/javascript">
+        // changer l'image de fond quand on passe la souris sur les annonces
+        $(function() {
+            function setBackground(url, opacity=0.1) {
+                console.log(url);
+                $("#body-background").css({
+                    backgroundImage: "url(\""+url+"\")",
+                });
+            }
+
+            function removeBackground() {
+                setBackground('', 0);
+            }
+
+            $('.thumbnail').each(function() {
+                var thumbnail = $(this);
+                var img = thumbnail.find("img");
+                var image = $(img);
+                thumbnail.hover(function() {
+                    console.log(image);
+                    setBackground(image.attr('src'));
+                },
+                function() {
+                    removeBackground();
+                });
+            });
+        });
+    </script>
 {% endblock %}
