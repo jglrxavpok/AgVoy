@@ -42,7 +42,6 @@ class ReservationController extends AbstractController
         $reservation->setStartTime($startTime);
         $reservation->setEndTime($endTime);
 
-        // TODO: vérifier qu'il n'y a pas déjà une réservation pour cet intervalle
         $entityManager = $this->getDoctrine()->getManager();
 
         $reservations = $entityManager->getRepository(Reservation::class);
