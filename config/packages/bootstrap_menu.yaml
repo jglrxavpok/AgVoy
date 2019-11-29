@@ -13,6 +13,10 @@ bootstrap_menu:
           label: 'Créer une chambre'
           route: 'room_create'
           roles: ['ROLE_OWNER']
+        backoffice:
+          label: 'Espace admin'
+          route: 'admin_region_index'
+          roles: ['ROLE_ADMIN']
 
     unconnected:
       items:

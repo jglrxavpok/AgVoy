@@ -35,12 +35,22 @@ class AppFixtures extends Fixture
 
         $manager->persist($user);
 
+        $adminClient = new Client();
+        $adminClient->setEmail("admin@example.com");
+        $adminOwner = new Owner();
+        $adminOwner->setCountry("FR");
+        $adminOwner->setFirstName("Super");
+        $adminOwner->setFamilyName("Admin");
         $admin = new User();
         $admin->setEmail("admin@example.com");
         $admin->setPassword($this->passwordEncoder->encodePassword($admin, "abc"));
         $admin->addRole("ROLE_ADMIN");
+        $admin->setOwner($adminOwner);
+        $admin->setClient($adminClient);
 
         $manager->persist($admin);
+        $manager->persist($adminOwner);
+        $manager->persist($adminClient);
 
         $ownerObj = new Owner();
         $ownerObj->setFirstName("John");

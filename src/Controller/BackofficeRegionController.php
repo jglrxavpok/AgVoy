@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Region;
 use App\Form\RegionType;
 use App\Repository\RegionRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,7 @@ class BackofficeRegionController extends AbstractController
 {
     /**
      * @Route("/", name="admin_region_index", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function index(RegionRepository $regionRepository): Response
     {
@@ -27,6 +29,7 @@ class BackofficeRegionController extends AbstractController
 
     /**
      * @Route("/new", name="admin_region_new", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function new(Request $request): Response
     {
@@ -50,6 +53,7 @@ class BackofficeRegionController extends AbstractController
 
     /**
      * @Route("/{id}", name="admin_region_show", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function show(Region $region): Response
     {
@@ -60,6 +64,7 @@ class BackofficeRegionController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="admin_region_edit", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function edit(Request $request, Region $region): Response
     {
@@ -80,6 +85,7 @@ class BackofficeRegionController extends AbstractController
 
     /**
      * @Route("/{id}", name="admin_region_delete", methods={"DELETE"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function delete(Request $request, Region $region): Response
     {

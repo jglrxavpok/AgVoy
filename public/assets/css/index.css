@@ -2,13 +2,13 @@
     font-family: "DejaVu Serif";
     color: black;
     width:600px;
+}
 
 .btn_region-link{
-    color: #007bff;
+    color: whitesmoke;
 }
 
 
-}
 #welcome-text {
     text-align: right;
     border-color: black;
