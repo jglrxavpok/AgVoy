@@ -67,6 +67,7 @@
         <div>
             {% if is_granted('ROLE_CLIENT') %}
                 <a href="{{ path('room_reservation', { "id": room.id}) }}" class="btn btn-success">Réserver</a>
+                <a href="{{ path('commentary', { "id": room.id}) }}" class="btn btn-success">Evaluer cette chambre</a>
             {% elseif is_granted('ROLE_OWNER') and isOwnRoom %} {# On vérifie que le propriétaire est le bon #}
                 <div class="reservations">
                     <h3>Réservations</h3>
@@ -105,34 +106,35 @@
             {% else %}
                 Connectez vous pour réserver cette chambre.
             {% endif %}
+            <div class="commentaire">
+                <h1>Commentaires</h1>
+                {% if commentaries|length > 0 %}
+                    <table class="big-table">
+                        <thead class="big-table-header">
+                        <th>Utilisateur</th>
+                        <th>Commentaire</th>
+                        </thead>
+                        <tbody class="big-table-body">
+                        {% for commentary in commentaries %}
+                            <tr>
+                                <td>
+                                    {{ commentary.client.email }}
+                                </td>
+                                <td>
+                                    {{ commentary.text }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    Désolé, il n'y a pas de commentaires!
+                {% endif %}
+            </div>
         </div>
     </div>
 
-    <div class="commentaries">
-        <h1>Commentaires</h1>
-        {% if commentaries|length > 0 %}
-            <table class="big-table">
-                <thead class="big-table-header">
-                <th>Utilisateur</th>
-                <th>Commentaire</th>
-                </thead>
-                <tbody class="big-table-body">
-                {% for commentary in commentaries %}
-                    <tr>
-                        <td>
-                            {{ commentary.client.email }}
-                        </td>
-                        <td>
-                            {{ commentary.text }}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            Désolé, il n'y a pas de commentaires!
-        {% endif %}
-    </div>
+
 {% endblock %}
 
 {% block customJS %}

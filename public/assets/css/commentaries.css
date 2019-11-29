@@ -1,10 +1,10 @@
 .commentaries {
     position: absolute;
     top: 130px;
-    right: 30px;
+    right: 10px;
     width: min-content;
 
-    margin-right: 30px;
+    margin-right: 0px;
 
     text-align: center;
     float: right;
@@ -31,6 +31,6 @@
 
 table {
     border-collapse: separate;
-    border-spacing: 50px 0;
+    border-spacing: 10px 0;
 }
 
